@@ -4,7 +4,8 @@ import numpy as np
 import time
 import statistics
 import matplotlib.pyplot as plt
-import mnist
+from tensorflow.keras.datasets import mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 import os
 from tqdm import tqdm
 from sudoku_solver.board import Board
@@ -170,15 +171,15 @@ def train_val_test_split_satnet(data_name, final_data, final_images, final_solut
 def images_generation(data_name,flag):
     print('Generating board images - ', flag)
     if flag == 'test':
-        labels =  mnist.test_labels()
-        images = mnist.test_images()
+        labels =  test_labels
+        images = test_images
     elif flag == 'train':
-        labels = mnist.train_labels()[:-10000]
-        images = mnist.train_images()[:-10000]
+        labels = train_labels[:-10000]
+        images = train_images[:-10000]
     else:
         assert(flag == 'valid')
-        labels = mnist.train_labels()[-10000:]
-        images = mnist.train_images()[-10000:]
+        labels = train_labels[-10000:]
+        images = train_images[-10000:]
     data_in = f'data/{data_name}/{data_name}-{flag}.npy'
     data_out_imgs_path = f'data/{data_name}/images/'
     try:
@@ -289,7 +290,7 @@ def add_noise(board,solution_board,min_noise,max_noise,factor,noise_input=True,m
                     j = input_cells[1][index]
                     values_vector = [kk for kk in range(1,10)]
                     values_vector.remove(board[i][j])
-                    noise_board[i][j] = np.random.choice(values_vector,1)
+                    noise_board[i][j] = np.random.choice(values_vector,1)[0]
                     labels[i][j] = 0
 
         mask_input_list.append(noise_board)

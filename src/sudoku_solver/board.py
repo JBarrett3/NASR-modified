@@ -3,7 +3,8 @@ import numpy as np
 import time
 import statistics
 import matplotlib.pyplot as plt
-import mnist
+from tensorflow.keras.datasets import mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm
@@ -18,7 +19,7 @@ except Exception:
 
 data_path = 'data/'
 
-def get_number_img(num,labels= mnist.test_labels(),images=mnist.test_images()):
+def get_number_img(num,labels=test_labels,images=test_images):
     idxs = np.where(labels == num)[0]
     idx = np.random.choice(idxs, 1)
     img = images[idx].reshape((28, 28)).astype(int)
